@@ -4,6 +4,10 @@
 <div class="container mx-auto p-4">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Contact Management</h1>
+            <div class="space-x-2">
+                <a href="{{ route('contacts.export','csv') }}" class="bg-emerald-600 text-white px-3 py-2 rounded">CSV</a>
+                <a href="{{ route('contacts.export','xlsx') }}" class="bg-emerald-600 text-white px-3 py-2 rounded">Excel</a>
+            </div>
         <button id="addContactBtn" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Add Contact</button>
     </div>
 
@@ -16,13 +20,15 @@
             <option value="male">Male</option>
             <option value="female">Female</option>
         </select>
-        <select id="filterField" class="border p-2">
-            <option value="">Any Custom Field</option>
-            @foreach($customFields as $f)
-              <option value="{{ $f->name }}">{{ $f->name }}</option>
-            @endforeach
-        </select>
-        <input type="text" id="filterFv" class="border p-2" placeholder="Custom value">
+        @if($customFields->isNotEmpty())
+            <select id="filterField" class="border p-2">
+                <option value="">Any Custom Field</option>
+                @foreach($customFields as $f)
+                  <option value="{{ $f->name }}">{{ $f->name }}</option>
+                @endforeach
+            </select>
+            <input type="text" id="filterFv" class="border p-2" placeholder="Custom value">
+        @endif
     </div>
 
     <!-- Contact List -->
@@ -111,11 +117,21 @@
     document.getElementById('searchName').addEventListener('input', filterContacts);
     document.getElementById('searchEmail').addEventListener('input', filterContacts);
     document.getElementById('filterGender').addEventListener('change', filterContacts);
-document.getElementById('filterField').addEventListener('change', filterContacts);
-document.getElementById('filterFv').addEventListener('input', filterContacts);
+const filterFieldEl = document.getElementById('filterField');
+const filterFvEl   = document.getElementById('filterFv');
+if(filterFieldEl) filterFieldEl.addEventListener('change', filterContacts);
+if(filterFvEl)    filterFvEl.addEventListener('input', filterContacts);
+// document.getElementById('filterField').addEventListener('change', filterContacts);
+// document.getElementById('filterFv').addEventListener('input', filterContacts);
 
     function filterContacts() {
-        const qs = new URLSearchParams({name:searchName.value,email:searchEmail.value,gender:filterGender.value,field:filterField.value,fv:filterFv.value}).toString();
+        const qs = new URLSearchParams({
+            name: searchName.value,
+            email: searchEmail.value,
+            gender: filterGender.value,
+            field: filterFieldEl ? filterFieldEl.value : '',
+            fv:   filterFvEl ? filterFvEl.value : ''
+        }).toString();
         fetch(`/contacts?${qs}`, {headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'}})
             .then(res => res.text())
             .then(html => document.getElementById('contactList').innerHTML = html);

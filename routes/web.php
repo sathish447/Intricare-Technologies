@@ -8,5 +8,6 @@ Route::get('/', function () {
 });
 
 Route::resource('contacts', ContactController::class);
+Route::get('contacts/export/{type}', [ContactController::class,'export'])->whereIn('type',["csv","xlsx"])->name('contacts.export');
 Route::post('contacts/merge', [ContactController::class,'merge'])->name('contacts.merge');
 Route::resource('custom-fields', CustomFieldController::class)->except('show');

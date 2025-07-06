@@ -6,6 +6,8 @@ use App\Models\Contact;
 use App\Models\CustomField;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ContactExport;
 
 class ContactController extends Controller
 {
@@ -136,6 +138,13 @@ class ContactController extends Controller
 
         $secondary->delete();
         return response()->json(['status'=>'success','message'=>'Contacts merged']);
+    }
+
+    public function export(string $type)
+    {
+        abort_unless(in_array($type,['csv','xlsx']),404);
+        $file = 'contacts_'.now()->format('Ymd_His').'.'.$type;
+        return Excel::download(new ContactExport, $file);
     }
 
     private function saveCustom(Contact $contact, array $pairs){

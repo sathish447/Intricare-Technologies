@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
         // call additional seeders
         $this->call(CustomFieldSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }
