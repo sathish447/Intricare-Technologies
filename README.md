@@ -7,7 +7,75 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Laravel CRM – Contacts Module
+
+A lightweight Customer-Relationship Management demo built with Laravel 10.
+
+It showcases:
+
+* Dynamic **custom fields** (e.g. Birthday, Address) without code changes.
+* **AJAX** CRUD via Tailwind-styled modals.
+* Live **filtering** including any custom field.
+* **Merge** two contacts safely, preserving phones/emails & custom data.
+* Image/file uploads with strict FormRequest validation and 422 JSON error handling.
+
+---
+
+## 1. Requirements
+• PHP 8.1+ • Composer • Node 18+ (optional for assets) • MySQL/MariaDB/SQLite
+
+## 2. Setup
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+# set DB credentials
+php artisan migrate --seed   # adds Birthday & Address custom fields
+php artisan serve            # http://127.0.0.1:8000/contacts
+```
+
+## 3. Usage
+### 3.1 Contacts CRUD
+– Click **Add Contact** ➜ fill form ➜ green toast.
+– Edit/Delete buttons work via AJAX.
+
+### 3.2 Filtering
+Search boxes + custom-field selector update the table instantly.
+
+### 3.3 Merging
+Press **Merge** on a row → choose master → success toast.
+
+### 3.4 Custom fields
+Visit `/custom-fields` to add any field; it appears automatically in forms and filters.
+
+## 4. Validation rules
+| Field | Rules |
+|-------|-------|
+| name | required, 2-255 chars |
+| email | nullable, `email:rfc,dns`, unique |
+| phone | nullable, digits 7-15, unique |
+| gender | male/female/other |
+| profile_image | image ≤2 MB |
+| additional_file | file ≤5 MB |
+
+Failures return 422 JSON and are shown as red toasts.
+
+## 5. Important files
+```
+app/Models/Contact.php                  # relations & fillables
+app/Http/Controllers/ContactController  # CRUD, merge, file uploads
+resources/views/contacts/index.blade.php# UI, JS logic
+routes/web.php                          # routes incl. contacts.merge
+``` 
+
+## 6. Extending
+* Add auth via Laravel Breeze.
+* Write PHPUnit tests with model factories.
+* Export contacts to CSV/Excel.
+
+---
+© 2025 Intricare Technologies
+
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
