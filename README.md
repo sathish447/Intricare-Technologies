@@ -11,7 +11,6 @@ It showcases:
 * Image/file uploads with strict FormRequest validation and 422 JSON error handling.
 * **Export** contacts to CSV or Excel in one click.
 * **Automated tests** with Pest & model factories for CRUD and export.
-
 ---
 
 ## 1. Requirements
