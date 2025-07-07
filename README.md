@@ -68,6 +68,9 @@ Failures return 422 JSON and are shown as red toasts.
 ### Merge Success
 ![After Merge](public/screenshots/merge-success.png)
 
+Watch the demo of the Laravel assignment here:  
+🔗 [Watch on YouTube](https://youtu.be/W8dkX93J7g0)
+
 
 ## 👤 Author
 
